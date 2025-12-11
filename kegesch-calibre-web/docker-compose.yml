@@ -7,7 +7,7 @@ services:
       PROXY_AUTH_ADD: "false"
     container_name: kegesch-calibre-web_app_proxy_1
   server:
-    image: ghcr.io/kegesch/kegesch-calibre-web:latest
+    image: ghcr.io/kegesch/umbrel-apps/kegesch-calibre-web:0.6.25
     stop_grace_period: 1m
     environment:
       - PUID=1000
