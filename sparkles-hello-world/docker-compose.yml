@@ -1,14 +1,21 @@
-version: "3.7"
-
+version: '3.7'
 services:
-
   app_proxy:
     environment:
-      # The format here is: <app-id>_<docker-service-name>_1
-      APP_HOST: sparkles-hello-world_server_1
-      APP_PORT: 3000
-    
+      APP_HOST: kegesch-calibre-web_server_1
+      APP_PORT: 8083
+      PROXY_AUTH_ADD: 'false'
+    container_name: kegesch-calibre-web_app_proxy_1
   server:
-    image: getumbrel/community-app-store-hello-world:latest
-    user: "1000:1000"
-    init: true
+    image: >-
+      linuxserver/calibre-web:0.6.25@sha256:ab176faac42ad33f5fa898f7c975fa590f4507b35afaf6c4cc3e9acf4ba860fa
+    stop_grace_period: 1m
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - DOCKER_MODS=linuxserver/mods:universal-calibre
+    volumes:
+      - ${APP_DATA_DIR}/data/config:/config
+      - ${APP_DATA_DIR}/data/books:/books
+    restart: on-failure
+    container_name: kegesch-calibre-web_server_1

@@ -1,30 +1,48 @@
 manifestVersion: 1
-id: sparkles-hello-world
-name: Hello World
-tagline: Replace this tagline with your app's tagline
-icon: https://svgur.com/i/mvA.svg
-category: Development
-version: "1.0.0"
-port: 4000
+id: kegesch-calibre-web
+category: files
+name: Calibre Web
+version: "0.6.25"
+tagline: A clean web app for your eBooks
 description: >-
-  Add your app's description here.
+  Calibre-Web is a web app providing a clean interface for browsing, reading and downloading eBooks using an existing Calibre database.
+  It is also possible to integrate google drive and edit metadata and your calibre library through the app itself.
 
 
-  You can also add newlines!
+  🛠️ SET-UP INSTRUCTIONS
 
-developer: Umbrel
-website: https://umbrel.com
-submitter: Umbrel
-submission: https://github.com/getumbrel/umbrel-hello-world-app
-repo: https://github.com/getumbrel/umbrel-hello-world-app
-support: https://github.com/getumbrel/umbrel-hello-world-app/issues
-gallery:
-  - https://i.imgur.com/yyVG0Jb.jpeg
-  - https://i.imgur.com/yyVG0Jb.jpeg
-  - https://i.imgur.com/yyVG0Jb.jpeg
-releaseNotes: >-
-  Add what's new in the latest version of your app here.
+    - Library Setup: On the initial setup screen, enter /books as your calibre library location.
+    - Uploading eBooks: If you wish to enable the upload feature, navigate to Admin > Edit Basic Configuration > Feature Configuration and toggle "Enable Upload".
+    - Documentation: It is recommended to read through the official documentation available at https://github.com/janeczku/calibre-web/wiki
+developer: Janeczku
+website: https://github.com/janeczku/calibre-web
 dependencies: []
+repo: https://github.com/janeczku/calibre-web
+support: https://github.com/linuxserver/docker-calibre-web/issues
+port: 8098
+gallery:
+  - 1.jpg
+  - 2.jpg
+  - 3.jpg
 path: ""
-defaultUsername: ""
-defaultPassword: ""
+defaultUsername: "admin"
+defaultPassword: "admin123"
+torOnly: false
+releaseNotes: >-
+  This app includes the ebook-convert binary and does not use the app proxy.
+  This update includes several new features and improvements:
+
+
+    - Enhanced metadata extraction for audio files during upload
+    - Improved PDF viewer functionality
+    - Better shelf sorting capabilities
+    - Improved contrast for epub reader in dark modes
+    - Support for multiple e-reader email addresses
+    - Enhanced whitespace handling and string formatting
+    - Improvements to Kobo sync and browser experience
+    - Various bug fixes and stability enhancements
+    - Better support for Windows installations
+
+
+  Full release notes can be found here: https://github.com/janeczku/calibre-web/releases
+submitter: kegesch
