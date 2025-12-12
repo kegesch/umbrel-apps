@@ -10,58 +10,32 @@
 # Final image is based on linuxserver/calibre-web and only receives the extracted
 # Calibre runtime files from the downloader stage (keeps final image smaller).
 
-### Stage 1: download & extract Calibre ###
-FROM ubuntu:22.04 AS calibre-downloader
+### Stage 1: install Calibre using official installer ###
+FROM ubuntu:22.04 AS calibre-installer
 
 ARG MOD_VERSION
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install minimal tooling required for resolving releases and extracting txz
+# Install minimal tooling and libraries required for the installer script
 RUN apt-get update -y && \
     apt-get install -y --no-install-recommends \
-    ca-certificates curl jq xz-utils tar && \
+    ca-certificates curl wget python3 xz-utils xdg-utils \
+    libgl1 libglx-mesa0 libxdamage1 libegl1 libxkbcommon0 libnss3 \
+    libopengl0 libxcomposite1 libxkbfile1 libxrandr2 libxtst6 \
+    libxcb-cursor0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 \
+    libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xkb1 \
+    libfreetype6 libfontconfig1 libdbus-1-3 && \
     rm -rf /var/lib/apt/lists/*
 
-# Resolve Calibre release tag (if MOD_VERSION not provided) and write marker files
+# Use the official Calibre installer script which handles all path setup automatically
 RUN set -eux; \
     if [ -z "${MOD_VERSION:-}" ]; then \
-    MOD_VERSION="$(curl -fsSL 'https://api.github.com/repos/kovidgoyal/calibre/releases/latest' | jq -r '.tag_name')"; \
-    fi; \
-    CALIBRE_VER="${MOD_VERSION#v}"; \
-    echo "${MOD_VERSION}" > /calibre_version; \
-    echo "${CALIBRE_VER}" > /calibre_ver; \
-    echo "Resolved Calibre version: ${MOD_VERSION} -> ${CALIBRE_VER}"
-
-# Download the appropriate Calibre txz for the build architecture and extract it.
-# Keep download + extract as a single layer so changes to the download (or version)
-# only affect this layer.
-RUN set -eux; \
-    ARCH="$(uname -m)"; \
-    MOD_VERSION="$(cat /calibre_version)"; \
-    CALIBRE_VER="$(cat /calibre_ver)"; \
-    CALIBRE_TXZ="/tmp/calibre.txz"; \
-    if [ "$ARCH" = "x86_64" ] || [ "$ARCH" = "amd64" ]; then \
-    URL_GH="https://github.com/kovidgoyal/calibre/releases/download/${MOD_VERSION}/calibre-${CALIBRE_VER}-x86_64.txz"; \
-    URL_ALT="https://download.calibre-ebook.com/${CALIBRE_VER}/calibre-${CALIBRE_VER}-x86_64.txz"; \
-    elif [ "$ARCH" = "aarch64" ] || [ "$ARCH" = "arm64" ]; then \
-    URL_GH="https://github.com/kovidgoyal/calibre/releases/download/${MOD_VERSION}/calibre-${CALIBRE_VER}-arm64.txz"; \
-    URL_ALT="https://download.calibre-ebook.com/${CALIBRE_VER}/calibre-${CALIBRE_VER}-arm64.txz"; \
+    wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin; \
     else \
-    echo "Unsupported architecture: $ARCH"; \
-    exit 0; \
+    CALIBRE_VER="${MOD_VERSION#v}"; \
+    wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sh /dev/stdin version=${CALIBRE_VER}; \
     fi; \
-    if ! curl -fsSL -o "$CALIBRE_TXZ" "$URL_GH"; then \
-    curl -fsSL -o "$CALIBRE_TXZ" "$URL_ALT"; \
-    fi; \
-    if [ ! -s "$CALIBRE_TXZ" ]; then \
-    echo "Calibre archive missing or empty, aborting"; \
-    rm -f "$CALIBRE_TXZ" || true; \
-    exit 1; \
-    fi; \
-    mkdir -p /opt/calibre; \
-    tar -xJf "$CALIBRE_TXZ" -C /opt/calibre --strip-components=1; \
-    rm -f "$CALIBRE_TXZ"; \
-    echo "Calibre extracted to /opt/calibre"
+    calibre --version > /calibre_version || true
 
 ### Stage 2: final image ###
 FROM linuxserver/calibre-web:0.6.25@sha256:ab176faac42ad33f5fa898f7c975fa590f4507b35afaf6c4cc3e9acf4ba860fa
@@ -84,9 +58,11 @@ RUN set -eux; \
     echo "apt not found in base image; skipping runtime libs installation."; \
     fi
 
-# Copy only the extracted Calibre runtime and the version marker from the downloader stage.
-COPY --from=calibre-downloader /opt/calibre /opt/calibre
-COPY --from=calibre-downloader /calibre_version /etc/calibre/RELEASE
+# Copy the installed Calibre from the installer stage.
+# The official installer puts everything in /opt/calibre and sets up paths correctly.
+RUN rm -rf /opt/calibre /opt/lib
+COPY --from=calibre-installer /opt/calibre /opt/calibre
+COPY --from=calibre-installer /calibre_version /etc/calibre/RELEASE
 
 # Ensure /etc/calibre exists and create symlink(s) for the calibre executable.
 RUN set -eux; \
@@ -101,6 +77,19 @@ RUN set -eux; \
     else \
     echo "Warning: no calibre binary found in /opt/calibre"; \
     fi
+
+# Configure library paths for Calibre shared libraries
+# The installer sets up /opt/calibre with all libraries
+RUN set -eux; \
+    echo "/opt/calibre" > /etc/ld.so.conf.d/calibre.conf; \
+    ldconfig
+
+# Set LD_LIBRARY_PATH for runtime
+ENV LD_LIBRARY_PATH="/opt/calibre"
+
+# Test that Calibre binaries work
+RUN set -eux; \
+    /opt/calibre/ebook-convert --version
 
 # Keep runtime DOCKER_MODS env available for compatibility
 ENV DOCKER_MODS_RUNTIME=${DOCKER_MODS}
