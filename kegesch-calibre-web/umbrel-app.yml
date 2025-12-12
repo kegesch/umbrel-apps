@@ -1,5 +1,6 @@
 manifestVersion: 1
 id: kegesch-calibre-web
+icon: https://getumbrel.github.io/umbrel-apps-gallery/calibre-web/icon.svg
 category: files
 name: Calibre Web
 version: "0.6.25"
@@ -21,9 +22,9 @@ repo: https://github.com/janeczku/calibre-web
 support: https://github.com/linuxserver/docker-calibre-web/issues
 port: 8098
 gallery:
-  - 1.jpg
-  - 2.jpg
-  - 3.jpg
+  - https://getumbrel.github.io/umbrel-apps-gallery/calibre-web/1.jpg
+  - https://getumbrel.github.io/umbrel-apps-gallery/calibre-web/2.jpg
+  - https://getumbrel.github.io/umbrel-apps-gallery/calibre-web/3.jpg
 path: ""
 defaultUsername: "admin"
 defaultPassword: "admin123"
