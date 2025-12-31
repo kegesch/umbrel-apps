@@ -6,10 +6,12 @@ services:
       APP_HOST: kegesch-trmnl-terminus_web_1
       APP_PORT: 2300
       PROXY_AUTH_ADD: "false"
+    container_name: kegesch-trmnl-terminus_app_proxy_1
 
   web:
     image: ghcr.io/usetrmnl/terminus:0.43.0
     init: true
+    container_name: kegesch-trmnl-terminus_web_1
     environment:
       HANAMI_PORT: "2300"
       APP_SECRET: ${APP_SEED}
@@ -18,12 +20,6 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data/uploads:/app/public/uploads
     restart: on-failure
-    healthcheck:
-      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:2300/up"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 45s
     depends_on:
       database:
         condition: service_healthy
@@ -33,6 +29,7 @@ services:
   worker:
     image: ghcr.io/usetrmnl/terminus:0.43.0
     init: true
+    container_name: kegesch-trmnl-terminus_worker_1
     command: bundle exec sidekiq -r ./config/sidekiq.rb
     environment:
       APP_SECRET: ${APP_SEED}
@@ -41,17 +38,12 @@ services:
     volumes:
       - ${APP_DATA_DIR}/data/uploads:/app/public/uploads
     restart: on-failure
-    healthcheck:
-      test: ["CMD", "pgrep", "-f", "sidekiq"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 45s
     depends_on:
       - web
 
   database:
-    image: postgres:18.1-alpine
+    image: postgres:17-alpine
+    container_name: kegesch-trmnl-terminus_database_1
     environment:
       POSTGRES_USER: terminus
       POSTGRES_PASSWORD: terminus
@@ -63,10 +55,12 @@ services:
       test: ["CMD-SHELL", "pg_isready -U terminus -d terminus"]
       interval: 10s
       timeout: 5s
-      retries: 3
+      retries: 5
+      start_period: 30s
 
   keyvalue:
     image: valkey/valkey:9-alpine
+    container_name: kegesch-trmnl-terminus_keyvalue_1
     command: >
       valkey-server
       --requirepass terminus
@@ -76,8 +70,8 @@ services:
       - ${APP_DATA_DIR}/data/valkey:/data
     restart: on-failure
     healthcheck:
-      test: ["CMD-SHELL", "valkey-cli -a terminus ping || exit 1"]
+      test: ["CMD", "valkey-cli", "-a", "terminus", "ping"]
       interval: 10s
       timeout: 5s
-      retries: 3
-      start_period: 2s
+      retries: 5
+      start_period: 10s
