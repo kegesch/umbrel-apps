@@ -17,18 +17,25 @@ services:
       - |
         mkdir -p /app/public/uploads/cache
         chown -R 1000:1000 /app/public/uploads
-        echo "Permissions set successfully"
+        if [ ! -f /settings/settings.env ]; then
+          cp /settings-template/settings.env /settings/settings.env
+          chown 1000:1000 /settings/settings.env
+        fi
+        echo "Initialization complete"
     volumes:
       - ${APP_DATA_DIR}/data/uploads:/app/public/uploads
+      - ${APP_DATA_DIR}:/settings
+      - ${APP_DIR}/settings.env:/settings-template/settings.env:ro
     restart: "no"
 
   web:
     image: ghcr.io/usetrmnl/terminus:0.43.0
     init: true
     container_name: kegesch-trmnl-terminus_web_1
+    env_file:
+      - ${APP_DATA_DIR}/settings.env
     environment:
       HANAMI_PORT: "2300"
-      API_URI: http://${DEVICE_HOSTNAME}:2300
       APP_SECRET: ${APP_SEED}
       DATABASE_URL: postgres://terminus:terminus@kegesch-trmnl-terminus_database_1:5432/terminus
       KEYVALUE_URL: redis://:terminus@kegesch-trmnl-terminus_keyvalue_1:6379/0
@@ -47,9 +54,10 @@ services:
     image: ghcr.io/usetrmnl/terminus:0.43.0
     init: true
     container_name: kegesch-trmnl-terminus_worker_1
+    env_file:
+      - ${APP_DATA_DIR}/settings.env
     command: bundle exec sidekiq -r ./config/sidekiq.rb
     environment:
-      API_URI: http://${DEVICE_HOSTNAME}:2300
       APP_SECRET: ${APP_SEED}
       DATABASE_URL: postgres://terminus:terminus@kegesch-trmnl-terminus_database_1:5432/terminus
       KEYVALUE_URL: redis://:terminus@kegesch-trmnl-terminus_keyvalue_1:6379/0
