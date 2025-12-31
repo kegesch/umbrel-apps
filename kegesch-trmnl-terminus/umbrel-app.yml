@@ -1,0 +1,38 @@
+manifestVersion: 1
+id: kegesch-trmnl-terminus
+icon: https://usetrmnl.com/assets/trmnl--glyph-black-0ded5ffe9393499f19263e54902d79c50191f83d46149d2f99da253cd3bd92e1.svg
+category: networking
+name: TRMNL Terminus
+version: "0.43.0"
+tagline: Self-hosted server for TRMNL e-ink devices
+description: >-
+  Terminus is a self-hosted BYOS (Bring Your Own Server) solution for TRMNL
+  e-ink devices. Run your own server to manage and display content on your
+  TRMNL devices without relying on external cloud services.
+
+
+  Built with Ruby and Hanami, Terminus provides a dashboard for managing devices,
+  playlists, and plugins. It supports auto-provisioning of devices and includes
+  a JSON Data API for integration.
+
+
+  SET-UP INSTRUCTIONS
+
+    - After installation, your TRMNL devices can connect to this server using
+      your Umbrel's IP address and port 2300 (e.g., http://192.168.1.x:2300)
+    - Configure your TRMNL device via the captive WiFi portal to use your
+      Umbrel's IP address as the custom host
+    - Click Register to create your first account (first user gets admin access)
+    - Documentation available at https://github.com/usetrmnl/byos_hanami
+developer: TRMNL
+website: https://usetrmnl.com
+repo: https://github.com/usetrmnl/byos_hanami
+support: https://github.com/usetrmnl/byos_hanami/issues
+port: 2300
+dependencies: []
+gallery: []
+path: ""
+torOnly: false
+releaseNotes: >-
+  Initial release of TRMNL Terminus for Umbrel.
+submitter: kegesch

@@ -1,0 +1,83 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: kegesch-trmnl-terminus_web_1
+      APP_PORT: 2300
+      PROXY_AUTH_ADD: "false"
+
+  web:
+    image: ghcr.io/usetrmnl/terminus:0.43.0
+    init: true
+    environment:
+      HANAMI_PORT: "2300"
+      APP_SECRET: ${APP_SEED}
+      DATABASE_URL: postgres://terminus:terminus@kegesch-trmnl-terminus_database_1:5432/terminus
+      KEYVALUE_URL: redis://:terminus@kegesch-trmnl-terminus_keyvalue_1:6379/0
+    volumes:
+      - ${APP_DATA_DIR}/data/uploads:/app/public/uploads
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "--silent", "http://localhost:2300/up"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 45s
+    depends_on:
+      database:
+        condition: service_healthy
+      keyvalue:
+        condition: service_healthy
+
+  worker:
+    image: ghcr.io/usetrmnl/terminus:0.43.0
+    init: true
+    command: bundle exec sidekiq -r ./config/sidekiq.rb
+    environment:
+      APP_SECRET: ${APP_SEED}
+      DATABASE_URL: postgres://terminus:terminus@kegesch-trmnl-terminus_database_1:5432/terminus
+      KEYVALUE_URL: redis://:terminus@kegesch-trmnl-terminus_keyvalue_1:6379/0
+    volumes:
+      - ${APP_DATA_DIR}/data/uploads:/app/public/uploads
+    restart: on-failure
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "sidekiq"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 45s
+    depends_on:
+      - web
+
+  database:
+    image: postgres:18.1-alpine
+    environment:
+      POSTGRES_USER: terminus
+      POSTGRES_PASSWORD: terminus
+      POSTGRES_DB: terminus
+    volumes:
+      - ${APP_DATA_DIR}/data/postgres:/var/lib/postgresql/data
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U terminus -d terminus"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  keyvalue:
+    image: valkey/valkey:9-alpine
+    command: >
+      valkey-server
+      --requirepass terminus
+      --maxmemory 512mb
+      --maxmemory-policy noeviction
+    volumes:
+      - ${APP_DATA_DIR}/data/valkey:/data
+    restart: on-failure
+    healthcheck:
+      test: ["CMD-SHELL", "valkey-cli -a terminus ping || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 2s
