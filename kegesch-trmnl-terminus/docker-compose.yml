@@ -12,6 +12,7 @@ services:
     image: ghcr.io/usetrmnl/terminus:0.43.0
     init: true
     container_name: kegesch-trmnl-terminus_web_1
+    user: "1000:1000"
     environment:
       HANAMI_PORT: "2300"
       API_URI: http://${DEVICE_HOSTNAME}:2300
@@ -31,6 +32,7 @@ services:
     image: ghcr.io/usetrmnl/terminus:0.43.0
     init: true
     container_name: kegesch-trmnl-terminus_worker_1
+    user: "1000:1000"
     command: bundle exec sidekiq -r ./config/sidekiq.rb
     environment:
       API_URI: http://${DEVICE_HOSTNAME}:2300
