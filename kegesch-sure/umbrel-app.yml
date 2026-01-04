@@ -1,0 +1,49 @@
+manifestVersion: 1.1
+id: kegesch-sure
+category: finance
+name: Sure
+version: "0.6.6"
+icon: https://sure.am/apple-touch-icon.png
+tagline: Community-driven personal finance OS (fork of Maybe)
+description: >-
+  Sure is a community-driven fork of Maybe, providing a fully open-source OS for your personal finances.
+  Built by a passionate community committed to keeping personal finance management accessible and private.
+
+
+  Track your net worth, investments, spending habits, and more - all from a beautiful, self-hosted dashboard.
+  Your financial data stays on your own server, giving you complete control and privacy.
+
+
+  Features include:
+
+  - Net worth tracking across all accounts
+
+  - Investment portfolio management
+
+  - Spending analysis and budgeting
+
+  - Transaction categorization with smart rules
+
+  - AI-powered insights (optional)
+
+  - Import from CSV and other formats
+
+  - Multi-currency support
+releaseNotes: >-
+  Version 0.6.6 focuses on smarter, more reliable core experience.
+  Improved transaction management with richer metadata, better merchant and category detection.
+  Expanded rules capabilities including new filters, actions, and execution visibility.
+  Enhanced banking integrations, UI refinements, and expanded localization support.
+developer: We Promise (Sure Community)
+website: https://github.com/we-promise/sure
+dependencies: []
+repo: https://github.com/we-promise/sure
+support: https://github.com/we-promise/sure/discussions
+port: 3064
+gallery:
+  - https://sure.am/assets/maybe-home-hero-693711d6.png
+path: ""
+defaultUsername: ""
+defaultPassword: ""
+submitter: kegesch
+submission: https://github.com/kegesch/umbrel-apps
