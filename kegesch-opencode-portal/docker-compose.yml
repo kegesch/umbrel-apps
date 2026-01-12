@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: kegesch-opencode-portal_web_1
+      APP_PORT: 3065
+      PROXY_AUTH_ADD: "false"
+    container_name: kegesch-opencode-portal_app_proxy_1
+
+  web:
+    image: ghcr.io/kegesch/umbrel-apps/kegesch-opencode-portal:0.1.24
+    container_name: kegesch-opencode-portal_web_1
+    restart: on-failure
+    stop_grace_period: 1m
+    environment:
+      - NODE_ENV=production
+      - PORT=3065
+      - OPENCODE_PORT=4000
+      - HOSTNAME=0.0.0.0
+    volumes:
+      - ${APP_DATA_DIR}/data/projects:/projects
+    working_dir: /projects

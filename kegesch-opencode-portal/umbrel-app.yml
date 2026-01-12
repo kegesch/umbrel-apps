@@ -1,0 +1,74 @@
+manifestVersion: 1
+id: kegesch-opencode-portal
+icon: https://raw.githubusercontent.com/hosenur/portal/main/banner.png
+category: developer
+name: OpenCode Portal
+version: "0.1.24"
+tagline: Mobile-first web UI for OpenCode AI coding agent
+description: >-
+  OpenCode Portal is a mobile-first, browser-based interface for interacting
+  with OpenCode, the AI coding agent by SST. This portal provides a responsive
+  web UI optimized for remote access from any device.
+
+
+  Features include:
+
+  - Session management (create, view, delete sessions)
+
+  - Real-time chat interface with the AI assistant
+
+  - File mention support (@filename to reference files)
+
+  - Model selection
+
+  - Dark/light theme support
+
+  - Git integration
+
+  - In-browser terminal
+
+  - Isolated workspaces
+
+
+  IMPORTANT SETUP REQUIREMENTS
+
+  This app requires an AI provider API key to function. You must configure
+  your preferred AI provider (OpenAI, Anthropic, etc.) by setting environment
+  variables.
+
+
+  After installation, SSH into your Umbrel and create a configuration file:
+
+    1. Create ~/umbrel/app-data/kegesch-opencode-portal/data/projects/.env
+
+    2. Add your API key: ANTHROPIC_API_KEY=your-key-here
+       (or OPENAI_API_KEY for OpenAI)
+
+    3. Restart the app
+
+
+  Note: This is a community-built interface and is not officially affiliated
+  with the SST team or the OpenCode project.
+releaseNotes: >-
+  Initial release of OpenCode Portal for Umbrel.
+
+  - Full web UI for OpenCode AI coding agent
+
+  - Mobile-responsive design
+
+  - Session management and real-time chat
+
+  - File reference support with @mentions
+developer: Hosenur Rahman
+website: https://openportal.space
+repo: https://github.com/hosenur/portal
+support: https://github.com/hosenur/portal/issues
+port: 3065
+dependencies: []
+gallery: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
+torOnly: false
+submitter: kegesch
+submission: https://github.com/kegesch/umbrel-apps
