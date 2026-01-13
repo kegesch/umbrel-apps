@@ -1,0 +1,119 @@
+manifestVersion: 1
+id: kegesch-ssh-dev
+icon: https://raw.githubusercontent.com/getumbrel/umbrel-apps-gallery/master/apps/ssh-server/icon.svg
+category: developer
+name: SSH Development Environment
+version: "0.1.0"
+tagline: Remote SSH access with git and OpenCode
+description: >-
+  A fully-featured development environment accessible via SSH from any device.
+  Perfect for coding on-the-go with OpenCode AI assistant, managing git repositories,
+  and performing development tasks from your phone using Terminus or any SSH client.
+
+
+  🚀 FEATURES
+
+  - Full SSH server access (port 2222)
+
+  - Pre-installed OpenCode AI coding agent
+
+  - Git and version control tools
+
+  - Development utilities: vim, nano, tmux, htop, curl, wget
+
+  - Both password and SSH key authentication supported
+
+  - Persistent workspace and home directory
+
+
+  📱 SET-UP INSTRUCTIONS
+
+  1. Install the app on your Umbrel
+
+  2. Default credentials:
+     - Username: dev
+     - Password: devuser (change this immediately!)
+
+  3. Connect from your phone using Terminus:
+     - Host: umbrel.local
+     - Port: 2222
+     - Username: dev
+     - Password: devuser (or use SSH key)
+
+
+  🔐 CHANGING DEFAULT PASSWORD
+
+  To change the default password, SSH into the container and run:
+    passwd
+
+  Or use environment variable DEV_PASSWORD in docker-compose.yml
+
+
+  🗝️ SSH KEY SETUP
+
+  To add your SSH public key for passwordless access:
+
+  1. Copy your public key content (e.g., from ~/.ssh/id_ed25519.pub)
+
+  2. SSH into the container
+
+  3. Add it to authorized_keys:
+     echo "your-public-key-content" >> ~/.ssh/authorized_keys
+
+  4. Set correct permissions:
+     chmod 700 ~/.ssh
+     chmod 600 ~/.ssh/authorized_keys
+
+
+  💡 USAGE EXAMPLES
+
+  Start OpenCode in a project:
+    cd ~/workspace
+    opencode-ai
+
+  Use tmux for persistent sessions:
+    tmux new -s dev
+
+  Monitor system resources:
+    htop
+
+  Edit files:
+    vim filename.py
+    nano filename.sh
+
+
+  📚 OPENCODE COMMANDS
+
+  Once inside, use OpenCode AI to help with development:
+    opencode-ai help
+    opencode-ai chat "create a python script"
+
+  Note: Both `opencode` and `opencode-ai` commands are available (they are aliases)
+
+developer: Kegesch
+website: https://github.com/kegesch/umbrel-apps
+repo: https://github.com/kegesch/umbrel-apps
+support: https://github.com/kegesch/umbrel-apps/issues
+port: 2222
+dependencies: []
+gallery: []
+path: ""
+defaultUsername: "dev"
+defaultPassword: "devuser"
+torOnly: false
+releaseNotes: >-
+  Initial release of SSH Development Environment for Umbrel.
+
+  - Full SSH server with port 2222
+
+  - OpenCode AI coding agent pre-installed
+
+  - Git and development tools included
+
+  - Both password and SSH key authentication
+
+  - Persistent workspace directory
+
+  - Non-root dev user with sudo access
+submitter: kegesch
+submission: https://github.com/kegesch/umbrel-apps
