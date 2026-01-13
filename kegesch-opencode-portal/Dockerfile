@@ -18,7 +18,7 @@ RUN set -eux; \
     rm -rf /var/lib/apt/lists/*
 
 
-RUN bun install -g opencode
+RUN bun install -g opencode-ai
 RUN bun install -g openportal
 
 # Create directory for user projects
