@@ -13,15 +13,12 @@ RUN set -eux; \
     git \
     ca-certificates \
     unzip; \
-    # Install OpenCode CLI
-    curl -fsSL https://opencode.ai/install | bash || true; \
     # Clean up
     apt-get clean; \
     rm -rf /var/lib/apt/lists/*
 
-# Add opencode to PATH
-ENV PATH="/root/.local/bin:${PATH}"
 
+RUN bun install -g opencode
 RUN bun install -g openportal
 
 # Create directory for user projects
