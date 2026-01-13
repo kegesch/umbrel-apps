@@ -1,24 +1,6 @@
 # OpenCode Portal Dockerfile
 # Multi-stage build for minimal final image size
 
-# Stage 1: Build the application
-FROM oven/bun:1.3 AS builder
-
-WORKDIR /app
-
-# Install git for cloning the repository
-RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
-
-# Clone the portal repository
-RUN git clone --depth 1 --branch main https://github.com/hosenur/portal.git .
-
-# Install dependencies
-RUN bun install --frozen-lockfile || bun install
-
-# Build the application
-RUN bun run build
-
-# Stage 2: Runtime image
 FROM oven/bun:1.3-slim
 
 WORKDIR /app
@@ -40,11 +22,7 @@ RUN set -eux; \
 # Add opencode to PATH
 ENV PATH="/root/.local/bin:${PATH}"
 
-# Copy built application from builder stage
-COPY --from=builder /app /app
-
-# Install production dependencies only
-RUN bun install --production --frozen-lockfile || bun install --production || true
+RUN bun install -g openportal
 
 # Create directory for user projects
 RUN mkdir -p /projects
@@ -63,4 +41,4 @@ WORKDIR /projects
 
 # Start OpenCode Portal
 # The CLI starts both the OpenCode server and the web UI
-CMD ["bunx", "openportal", "--hostname", "0.0.0.0", "--port", "3065", "--opencode-port", "4000", "--directory", "/projects"]
+CMD ["openportal", "--hostname", "0.0.0.0", "--port", "3065", "--opencode-port", "4000", "--directory", "/projects"]
