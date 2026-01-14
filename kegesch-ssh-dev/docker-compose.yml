@@ -9,17 +9,12 @@ services:
     container_name: kegesch-ssh-dev_app_proxy_1
 
   ssh:
-    build:
-      context: .
-      dockerfile: Dockerfile
     image: ghcr.io/kegesch/umbrel-apps/kegesch-ssh-dev:0.1.0
     container_name: kegesch-ssh-dev_ssh_1
     restart: on-failure
     stop_grace_period: 30s
     environment:
       - DEV_PASSWORD=devuser
-    ports:
-      - "2222:2222"
     volumes:
       - ${APP_DATA_DIR}/workspace:/workspace
       - ${APP_DATA_DIR}/home:/home/dev
