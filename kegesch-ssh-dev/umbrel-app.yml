@@ -1,6 +1,6 @@
 manifestVersion: 1
 id: kegesch-ssh-dev
-icon: https://raw.githubusercontent.com/getumbrel/umbrel-apps-gallery/master/apps/ssh-server/icon.svg
+icon: https://opencode.ai/apple-touch-icon.png
 category: developer
 name: SSH Development Environment
 version: "0.1.0"
