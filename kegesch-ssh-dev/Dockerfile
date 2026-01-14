@@ -99,11 +99,13 @@ else\n\
 fi\n\
 \n\
 # Create empty authorized_keys if it does not exist\n\
+mkdir -p /home/dev/.ssh\n\
 if [ ! -f /home/dev/.ssh/authorized_keys ]; then\n\
     touch /home/dev/.ssh/authorized_keys\n\
     chown dev:dev /home/dev/.ssh/authorized_keys\n\
     chmod 600 /home/dev/.ssh/authorized_keys\n\
 fi\n\
+chown -R dev:dev /home/dev/.ssh\n\
 \n\
 echo "SSH Development Environment starting..."\n\
 echo "OpenCode CLI: $(command -v opencode-ai || echo \"not found\")"\n\
