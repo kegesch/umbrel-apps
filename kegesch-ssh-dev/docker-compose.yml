@@ -1,13 +1,6 @@
 version: "3.7"
 
 services:
-  app_proxy:
-    environment:
-      APP_HOST: kegesch-ssh-dev_ssh_1
-      APP_PORT: 2222
-      PROXY_AUTH_ADD: "false"
-    container_name: kegesch-ssh-dev_app_proxy_1
-
   ssh:
     image: ghcr.io/kegesch/umbrel-apps/kegesch-ssh-dev:0.1.0
     container_name: kegesch-ssh-dev_ssh_1
