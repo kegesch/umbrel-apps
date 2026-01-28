@@ -1,0 +1,60 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: kegesch-openagent_openagent_1
+      APP_PORT: 3000
+    container_name: kegesch-openagent_app_proxy_1
+
+  openagent:
+    image: ghcr.io/kegesch/umbrel-apps/kegesch-openagent:0.4.0
+    container_name: kegesch-openagent_openagent_1
+    restart: on-failure
+    stop_grace_period: 1m
+    ports:
+      - "3000:3000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3000
+      - WORKING_DIR=/root
+      - DEV_MODE=true
+      - DASHBOARD_PASSWORD=change-me
+      - JWT_SECRET=change-me-to-a-long-random-string
+      - JWT_TTL_DAYS=30
+      - MAX_ITERATIONS=50
+      - STALE_MISSION_HOURS=24
+      - MAX_PARALLEL_MISSIONS=1
+      - DESKTOP_ENABLED=true
+      - DESKTOP_RESOLUTION=1920x1080
+      - GIT_TERMINAL_PROMPT=0
+    volumes:
+      - ${APP_DATA_DIR}/data:/root/.openagent
+      - ${APP_DATA_DIR}/claude-auth:/root/.claude
+    working_dir: /root
+
+    # =========================================================================
+    # PRIVILEGED MODE WARNING
+    # =========================================================================
+    # WARNING: Enabling privileged mode gives this container full host access.
+    # This breaks Umbrel's security isolation and should only be enabled on
+    # trusted, single-user instances if you understand the risks.
+    #
+    # Privileged mode is required for:
+    # - Container workspaces with systemd-nspawn
+    # - Full bash isolation for agents
+    # - Desktop automation with proper isolation
+    #
+    # To enable (ADVANCED USERS ONLY):
+    # 1. Uncomment the following two lines:
+    # privileged: true
+    # cgroup: host
+    # 2. Restart the app
+    #
+    # Most OpenAgent features work WITHOUT privileged mode, including:
+    # - Dashboard and web UI
+    # - Agent chat interface
+    # - File operations and code editing
+    # - Library management
+    # - Mission control and monitoring
+    # =========================================================================

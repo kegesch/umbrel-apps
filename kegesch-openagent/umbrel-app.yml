@@ -1,0 +1,121 @@
+manifestVersion: 1
+id: kegesch-openagent
+icon: https://raw.githubusercontent.com/Th0rgal/openagent/master/dashboard/public/favicon.svg
+category: developer
+name: OpenAgent
+version: "0.4.0"
+tagline: Self-hosted orchestrator for AI autonomous agents
+description: >-
+  OpenAgent is a self-hosted cloud orchestrator for AI coding agents. Run
+  Claude Code, OpenCode, and Amp in isolated Linux workspaces with full
+  mission control, real-time monitoring, and git-backed configuration
+  management.
+
+
+  Features:
+
+  - Dual Runtime Support: Run Claude Code, OpenCode, or Amp agents in
+    the same infrastructure
+
+  - Mission Control: Start, stop, and monitor agents remotely with
+    real-time streaming
+
+  - Git-backed Library: Manage skills, tools, rules, and agent configs
+    in a single git repository
+
+  - Web Dashboard: Modern Next.js interface with CPU/memory graphs,
+    mission timeline, and agent logs
+
+  - MCP Server Support: Optional tool servers for desktop automation
+    and extended capabilities
+
+
+  IMPORTANT SETUP REQUIREMENTS
+
+  Before using OpenAgent, you must configure essential security settings:
+
+  1. Default credentials: The app ships with placeholder credentials.
+     You MUST change these before production use. Edit the environment
+     variables in Umbrel's app settings:
+     - DASHBOARD_PASSWORD: Set a strong password
+     - JWT_SECRET: Set a long random string (generate with: openssl rand
+       -base64 32)
+
+  2. Development mode: DEV_MODE defaults to true for testing. Set to
+     false in production.
+
+  3. AI Provider: Configure your preferred AI provider (Anthropic for
+     Claude, OpenAI, etc.) by setting the appropriate API key in the
+     environment variables.
+
+
+  FEATURES WITHOUT PRIVILEGED MODE (DEFAULT)
+
+  The following features work without privileged mode:
+  - Dashboard and web UI
+  - Agent chat interface
+  - File operations and code editing
+  - Library management (skills, tools, rules)
+  - Mission control and monitoring
+  - Most agent tasks and tools
+
+
+  FEATURES REQUIRING PRIVILEGED MODE (ADVANCED)
+
+  To enable full isolated container workspaces with systemd-nspawn,
+  you need to enable privileged mode. This is NOT recommended for
+  production and should only be done if you understand the security
+  implications:
+
+  1. SSH into your Umbrel
+  2. Edit the docker-compose.yml:
+     ~/umbrel/app-data/kegesch-openagent/docker-compose.yml
+  3. Uncomment the privileged: true line in the openagent service
+  4. Restart the app
+
+  WARNING: Privileged containers have full host access and can break
+  Umbrel's security isolation. Only enable this on trusted, single-user
+  instances.
+
+
+  OPTIONAL CONFIGURATION
+
+  - Library Git Repo: Configure a remote git repository for your
+    skills and configs via the dashboard Settings page
+
+  - TAVILY_API_KEY: Set for enhanced web search (optional, falls back
+    to DuckDuckGo)
+
+  - OPENAGENT_SECRET_PASSPHRASE: Set to encrypt stored secrets
+
+
+  For full documentation, visit: https://github.com/Th0rgal/openagent
+
+
+  Note: This is a community-built Umbrel app and is not officially
+  affiliated with the OpenAgent project.
+releaseNotes: >-
+  Initial release of OpenAgent for Umbrel.
+
+  - Full web dashboard with real-time monitoring
+
+  - Support for Claude Code, OpenCode, and Amp runtimes
+
+  - Git-backed library for skills and configuration
+
+  - Mission control with agent lifecycle management
+
+  - MCP server integration for extended capabilities
+developer: Thomas Marchand
+website: https://agent.thomas.md
+repo: https://github.com/Th0rgal/openagent
+support: https://github.com/Th0rgal/openagent/issues
+port: 3000
+dependencies: []
+gallery: []
+path: ""
+defaultUsername: ""
+defaultPassword: ""
+torOnly: false
+submitter: kegesch
+submission: https://github.com/kegesch/umbrel-apps
