@@ -1,0 +1,47 @@
+manifestVersion: 1
+id: kegesch-calibre-web-automated
+icon: https://raw.githubusercontent.com/crocodilestick/Calibre-Web-Automated/main/root/images/app-icon.svg
+category: files
+name: Calibre-Web Automated
+version: "4.0.2"
+tagline: Automated Calibre-Web with powerful features
+description: >-
+  Calibre-Web Automated is an all-in-one solution combining the modern lightweight web UI from Calibre-Web with the robust feature set of Calibre, plus automation features thrown in on top.
+
+
+  ✨ FEATURES
+
+    - Automatic Ingest: Drop files in the ingest folder to automatically add them to your library
+    - Automatic Conversion: Automatically convert eBooks to EPUB, MOBI, AZW3, KEPUB, or PDF
+    - Cover & Metadata Enforcement: Changes made in the UI are applied to the actual eBook files
+    - Smart Duplicate Detection: Hybrid SQL + fuzzy matching to find and manage duplicate books
+    - Magic Shelves: Dynamic, rules-based shelves with rich filters
+    - Auto-Send to eReader: Automatically email new books to your devices
+    - KOReader Syncing: Built-in progress sync with KOReader
+    - Enhanced OAuth 2.0/OIDC: Auto-discovery support for modern auth providers
+    - Deep Stats & Analytics: Full analytics center with user activity and library insights
+    - EPUB Fixer: Automatically fix common EPUB issues for Amazon Send-to-Kindle
+    - Library Auto-Detect: Automatically find and mount your Calibre library
+
+
+  🛠️ SET-UP INSTRUCTIONS
+
+    - Library: Your Calibre library will be automatically created at /books if one doesn't exist
+    - Ingest Folder: Drop new eBooks into /ingest to automatically add them to your library
+    - Default Admin Login: admin / admin123
+    - Documentation: https://github.com/crocodilestick/Calibre-Web-Automated/wiki
+developer: crocodilestick
+website: https://github.com/crocodilestick/Calibre-Web-Automated
+dependencies: []
+repo: https://github.com/crocodilestick/Calibre-Web-Automated
+support: https://github.com/crocodilestick/Calibre-Web-Automated/issues
+port: 8083
+gallery:
+  - https://raw.githubusercontent.com/crocodilestick/Calibre-Web-Automated/main/README_images/CWA-Homepage.png
+  - https://raw.githubusercontent.com/crocodilestick/Calibre-Web-Automated/main/README_images/cwa-enforcer-diagram.png
+  - https://raw.githubusercontent.com/crocodilestick/Calibre-Web-Automated/main/README_images/cwa-bulk-editting-diagram.png
+path: ""
+defaultUsername: "admin"
+defaultPassword: "admin123"
+torOnly: false
+submitter: kegesch

@@ -1,0 +1,23 @@
+version: "3.7"
+
+services:
+  app_proxy:
+    environment:
+      APP_HOST: kegesch-calibre-web-automated_server_1
+      APP_PORT: 8083
+      PROXY_AUTH_ADD: "false"
+    container_name: kegesch-calibre-web-automated_app_proxy_1
+
+  server:
+    image: ghcr.io/crocodilestick/calibre-web-automated:v4.0.2
+    container_name: kegesch-calibre-web-automated_server_1
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=${TZ}
+    volumes:
+      - ${APP_DATA_DIR}/config:/config
+      - ${APP_DATA_DIR}/ingest:/cwa-book-ingest
+      - ${APP_DATA_DIR}/books:/calibre-library
+    restart: on-failure
+    stop_grace_period: 1m
