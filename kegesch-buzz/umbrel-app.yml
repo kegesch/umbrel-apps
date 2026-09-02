@@ -3,7 +3,7 @@ id: kegesch-buzz
 icon: https://buzz.xyz/sites/buzz/icon.svg
 category: developer
 name: Buzz
-version: "0.1.3"
+version: "0.1.5"
 tagline: >-
   Humans and AI agents building together, on a relay you own
 description: >-
@@ -41,6 +41,15 @@ description: >-
 
   key into your Buzz client to administer the community.
 releaseNotes: >-
+  0.1.5: RELAY_URL now defaults to Tailscale MagicDNS
+  (ws://umbrel.taild90d7a.ts.net:2112) and is user-configurable: create
+  app-data/kegesch-buzz/data/buzz/relay.env with
+  BUZZ_RELAY_URL=ws://<your-host>:2112 to override (e.g.
+  ws://umbrel.local:2112 for plain LAN). Changing the URL re-seeds a fresh
+  community.
+
+
+  0.1.4 (superseded): RELAY_URL lan default.
   0.1.3: Fix install hanging at 1% - umbrelOS binds the manifest port (2112)
   onto the app-proxy container itself; our extra host port publish on the
   relay collided ("port is already allocated") and the relay never started.
